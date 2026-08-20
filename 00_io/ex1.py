@@ -1,0 +1,16 @@
+# 입출럭
+a = input()
+print(a, end =" ")
+print(a, type(a), sep = " ")
+a = int(a)
+print(a, type(a), sep = " ")
+b = int(input())
+print(b, type(b), sep = " ")
+c = float(input())
+print(c, type(c), sep = " ")
+a= input().split(sep = " ")
+print(a, type(a), sep = " ")
+a, b, c = map(int, input().split())
+print(a,b,c, sep = " ")
+a = list(map(int, input().split()))
+print(a, type(a));
