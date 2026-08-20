@@ -1,4 +1,4 @@
-# 입출럭
+# 입출럭  
 a = input()
 print(a, end =" ")
 print(a, type(a), sep = " ")
