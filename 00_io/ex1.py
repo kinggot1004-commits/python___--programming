@@ -13,4 +13,4 @@ print(a, type(a), sep = " ")
 a, b, c = map(int, input().split())
 print(a,b,c, sep = " ")
 a = list(map(int, input().split()))
-print(a, type(a));
+print(a, type(a))
