@@ -70,4 +70,4 @@ print(s.union( s2)) # update와 동일
 
 # 멤버십 연산자
 print(10 in s)
-print(1 in s)
+print(1 in s).
