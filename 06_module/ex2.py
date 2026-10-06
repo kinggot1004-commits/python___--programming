@@ -9,15 +9,12 @@
 #  - from 패키지명.모듈명 import 함수명 (from 가져올 위치 import 가져올 대상)
 # ===========================================================
 from my_package import mymath
-print(mymath.version)
-print(m.add(10,20))
+print(mymath.PI)
+print(mymath.add(10,20))
 
 # ===========================================================
 # 2. __init__에서 re-export한 것 사용하기
 # ===========================================================
-
-from numpy import _core
-print(_core.arrange(5))
 
 url = "https://httpbin.org/get"
 
@@ -32,5 +29,3 @@ import requests
 response = requests.get(url)
 print(response.status_code)
 
-import numpy as np
-print(np.arrange(5))
