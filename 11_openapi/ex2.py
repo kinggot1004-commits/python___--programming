@@ -147,6 +147,6 @@ def get_food_info(KEY, sc_code, schul_code, mlsv_ymd=base_date):
         print(f"오류 발생: {e}")
 
 
-# 나이스 인증키 가져오기
+# 나이스 인증키 가져오기 
 neis_api_key = os.getenv("NEIS_API_KEY")
 get_food_info(neis_api_key, sc_code="J10", schul_code="7530560")

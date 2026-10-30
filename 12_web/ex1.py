@@ -149,7 +149,7 @@ count = 0
 # if st.button("카운트 증가"):
 #     count += 1
 
-# st.write(f"버튼 클릭 횟수: {count}")
+# st.write(f"버튼 클릭  횟수: {count}")
 
 
 if "count" not in st.session_state:
