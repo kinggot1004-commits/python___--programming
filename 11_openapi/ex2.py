@@ -18,6 +18,7 @@ load_dotenv()
 
 # 공공데이터포털 인증키 가져오기
 api_key = os.getenv("DATA_API_KEY")
+print(api_key)
 
 # 기준일자, 기준시간 가져오기
 now = datetime.now()
@@ -37,13 +38,16 @@ WEATHER_CODE = {
     "REH": "습도",
     "PTY": "강수형태",
     "VEC": "풍향",
-    "WSD": "풍속"
+    "WSD": "풍속",
 }
+
 
 def get_weather_info(SERVICE_KEY, base_date=base_date, base_time=base_time):
     try:
         # 초단기실황조회 API
-        url = "https://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getUltraSrtNcst"
+        url = (
+            "https://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getUltraSrtNcst"
+        )
         params = {
             "ServiceKey": SERVICE_KEY,
             "pageNo": 1,
@@ -51,7 +55,7 @@ def get_weather_info(SERVICE_KEY, base_date=base_date, base_time=base_time):
             "dataType": "JSON",
             "base_date": base_date,
             "base_time": base_time,
-            "nx": 57,                   # 엑셀파일에서 찾기
+            "nx": 57,  # 엑셀파일에서 찾기
             "ny": 122,
         }
 
@@ -60,7 +64,7 @@ def get_weather_info(SERVICE_KEY, base_date=base_date, base_time=base_time):
         if response.status_code != 200:
             print(f"요청 실패 (상태 코드: {response.status_code})")
             return
-        
+
         data = response.json()
         pprint.pprint(data)
 
@@ -70,12 +74,15 @@ def get_weather_info(SERVICE_KEY, base_date=base_date, base_time=base_time):
         if result_cd != "00":
             print(f"요청 실패 (Open API 결과 코드: {result_cd})")
             return
-        
+
         # 초단기실황조회 결과 출력
         items = data["response"]["body"]["items"]["item"]
 
+        # 강수형태: 0
+        # 습도: 55
+        # 1시간 강수량: 0
         for item in items:
-            pass
+            print(f"{WEATHER_CODE[item['category']]}: {item['obsrValue']}")
 
     except requests.exceptions.Timeout as e:
         print(f"서버 응답시간 초과: {e}")
@@ -84,7 +91,8 @@ def get_weather_info(SERVICE_KEY, base_date=base_date, base_time=base_time):
     except Exception as e:
         print(f"오류 발생: {e}")
 
-# get_weather_info(api_key)
+
+get_weather_info(api_key)
 
 
 # ===========================================================
@@ -92,6 +100,7 @@ def get_weather_info(SERVICE_KEY, base_date=base_date, base_time=base_time):
 #  - 나이스 교육정보 개방 포털(https://open.neis.go.kr/)
 #  - 교육부에서 제공하는 나이스 교육정보 제공 서비스
 # ===========================================================
+
 
 def get_food_info(KEY, sc_code, schul_code, mlsv_ymd=base_date):
     try:
@@ -101,9 +110,9 @@ def get_food_info(KEY, sc_code, schul_code, mlsv_ymd=base_date):
             "Type": "json",
             "pIndex": "1",
             "pSize": "100",
-            "ATPT_OFCDC_SC_CODE": sc_code,      # 시도교육청구분코드
-            "SD_SCHUL_CODE": schul_code,        # 행정표준코드
-            "MLSV_YMD": mlsv_ymd,               # 급식일자
+            "ATPT_OFCDC_SC_CODE": sc_code,  # 시도교육청구분코드
+            "SD_SCHUL_CODE": schul_code,  # 행정표준코드
+            "MLSV_YMD": mlsv_ymd,  # 급식일자
         }
 
         response = requests.get(url, timeout=10, params=params)
@@ -111,7 +120,7 @@ def get_food_info(KEY, sc_code, schul_code, mlsv_ymd=base_date):
         if response.status_code != 200:
             print(f"요청 실패 (상태 코드: {response.status_code})")
             return
-        
+
         data = response.json()
         pprint.pprint(data)
 
@@ -123,7 +132,13 @@ def get_food_info(KEY, sc_code, schul_code, mlsv_ymd=base_date):
             return
 
         # 급식정보 출력
-    
+        # 기준일자: 20261029
+        # 메뉴: XXXX
+        meal_info = data["mealServiceDietInfo"][1]["row"]
+        for meal in meal_info:
+            print(f"기준일자: {meal['MLSV_YMD']}")
+            print(f"메뉴: {meal['DDISH_NM']}")
+
     except requests.exceptions.Timeout as e:
         print(f"서버 응답시간 초과: {e}")
     except requests.exceptions.RequestException as e:
